@@ -6,7 +6,7 @@ const SubscriptionEmail = require("../models/SubscriptionEmail");
 const cloudinary = require("../middlewares/cloudinary");
 const upload = require("../middlewares/multer");
 
-router.get("/", async (req, res) => {
+router.get("/", (req, res) => {
   res.send("galleries");
 });
 
@@ -29,14 +29,8 @@ router.post("/create-gallery", upload.single("image"), async (req, res) => {
       description: description,
       price: price,
     });
-    await gallery
-      .save()
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        res.send(err);
-      });
+    await gallery.save();
+    res.send(gallery);
   } catch (error) {
     res.send(error);
   }
@@ -49,17 +43,17 @@ router.post("/subscribe", async (req, res) => {
       user_id: user_id,
       email: email,
     });
-    await subscriptionEmail
-      .save()
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        res.send(err);
-      });
+    await subscriptionEmail.save();
+    res.send(subscriptionEmail);
   } catch (error) {
     res.send(error);
   }
+});
+
+router.get("/all-gallery", async (req, res) => {
+  const { id } = req.body;
+  const galleries = await Gallery.find({ user_id: id });
+  res.send(galleries);
 });
 
 module.exports = router;

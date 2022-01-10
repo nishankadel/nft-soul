@@ -6,6 +6,10 @@ const SubscriptionEmail = require("../models/SubscriptionEmail");
 const cloudinary = require("../middlewares/cloudinary");
 const upload = require("../middlewares/multer");
 
+router.get("/", async (req, res) => {
+  res.send("galleries");
+});
+
 router.get("/get-gallery", async (req, res) => {
   const galleries = await Gallery.find({});
   res.send(galleries);

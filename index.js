@@ -19,3 +19,5 @@ app.use("/api", require("./routes/route"));
 
 app.get("/", (req, res) => res.render("pages/index"));
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+// MONGO_URL=mongodb+srv://nishankadel:nishankadel@cluster0.2gjw7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority

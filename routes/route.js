@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();
 const Gallery = require("../models/Gallery");
 const SubscriptionEmail = require("../models/SubscriptionEmail");
-const cloudinary = require("../middlewares/cloudinary");
-const upload = require("../middlewares/multer");
+// const cloudinary = require("../middlewares/cloudinary");
+// const upload = require("../middlewares/multer");
 
 router.get("/", (req, res) => {
   res.send("galleries");
@@ -15,17 +15,14 @@ router.get("/get-gallery", async (req, res) => {
   res.send(galleries);
 });
 
-router.post("/create-gallery", upload.single("image"), async (req, res) => {
+router.post("/create-gallery", async (req, res) => {
   try {
-    const { user_id, gallery_name, nfts, description, price } = req.body;
-    const output = await cloudinary.uploader.upload(req.file.path, {
-      folder: "featureimage",
-    });
+    const { user_id, gallery_name, nfts, description, price, image } = req.body;
     const gallery = await new Gallery({
       user_id: user_id,
       gallery_name: gallery_name,
       nfts: nfts,
-      image: output.secure_url,
+      image: image,
       description: description,
       price: price,
     });

@@ -32,7 +32,7 @@ router.get("/get-gallery", async (req, res) => {
   try {
     const popular = await Gallery.find({}).limit(4);
     const trending = await Gallery.find({}).sort({ created_at: 1 }).limit(4);
-    const toShuffle = await Gallery.find({}).limit(4);
+    const toShuffle = await Gallery.find({}).sort({ created_at: -1 }).limit(4);
     let premium = shuffle(toShuffle);
     res.send({ trending, popular, premium });
   } catch (error) {

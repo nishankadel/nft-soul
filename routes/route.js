@@ -3,16 +3,41 @@ const express = require("express");
 const router = express.Router();
 const Gallery = require("../models/Gallery");
 const SubscriptionEmail = require("../models/SubscriptionEmail");
-// const cloudinary = require("../middlewares/cloudinary");
-// const upload = require("../middlewares/multer");
 
 router.get("/", (req, res) => {
   res.send("galleries");
 });
 
+function shuffle(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}
+
 router.get("/get-gallery", async (req, res) => {
-  const galleries = await Gallery.find({});
-  res.send(galleries);
+  try {
+    const popular = await Gallery.find({}).limit(4);
+    const trending = await Gallery.find({}).sort({ created_at: 1 }).limit(4);
+    const toShuffle = await Gallery.find({}).limit(4);
+    let premium = shuffle(toShuffle);
+    res.send({ trending, popular, premium });
+  } catch (error) {
+    res.send(error);
+  }
 });
 
 router.post("/create-gallery", async (req, res) => {

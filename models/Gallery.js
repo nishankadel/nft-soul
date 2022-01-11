@@ -25,6 +25,10 @@ const gallerySchema = mongoose.Schema({
   price: {
     type: String,
   },
+  created_at:{
+    type: Date,
+    default: Date.now(),
+  }
 });
 
 const Gallery = mongoose.model("Gallery", gallerySchema);

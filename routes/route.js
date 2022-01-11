@@ -50,8 +50,8 @@ router.post("/subscribe", async (req, res) => {
   }
 });
 
-router.get("/all-gallery", async (req, res) => {
-  const { id } = req.body;
+router.get("/all-gallery/:id", async (req, res) => {
+  const { id } = req.params;
   const galleries = await Gallery.find({ user_id: id });
   res.send(galleries);
 });

@@ -40,6 +40,46 @@ router.get("/get-gallery", async (req, res) => {
   }
 });
 
+router.get("/all-trending", async (req, res) => {
+  try {
+    const { page, limit } = req.query;
+    const trending = await Gallery.find({})
+      .sort({ created_at: 1 })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+    res.send(trending);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.get("/all-popular", async (req, res) => {
+  try {
+    const { page, limit } = req.query;
+    const popular = await Gallery.find({})
+      .sort({ created_at: -1 })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+    res.send(popular);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.get("/all-premium", async (req, res) => {
+  try {
+    const { page, limit } = req.query;
+    const toShuffle = await Gallery.find({})
+      .sort({ created_at: -1 })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+    let premium = shuffle(toShuffle);
+    res.send(premium);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 router.post("/create-gallery", async (req, res) => {
   try {
     const { user_id, gallery_name, nfts, description, price, image } = req.body;

@@ -47,7 +47,8 @@ router.get("/all-trending", async (req, res) => {
       .sort({ created_at: 1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
-    res.send(trending);
+    const galleryCount = await Gallery.find({}).countDocuments();
+    res.send({ trending, galleryCount });
   } catch (error) {
     res.send(error);
   }
@@ -60,7 +61,8 @@ router.get("/all-popular", async (req, res) => {
       .sort({ created_at: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
-    res.send(popular);
+    const galleryCount = await Gallery.find({}).countDocuments();
+    res.send({ popular, galleryCount });
   } catch (error) {
     res.send(error);
   }
@@ -74,7 +76,8 @@ router.get("/all-premium", async (req, res) => {
       .limit(limit * 1)
       .skip((page - 1) * limit);
     let premium = shuffle(toShuffle);
-    res.send(premium);
+    const galleryCount = await Gallery.find({}).countDocuments();
+    res.send({ premium, galleryCount });
   } catch (error) {
     res.send(error);
   }

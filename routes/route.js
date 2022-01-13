@@ -58,7 +58,7 @@ router.get("/all-popular", async (req, res) => {
   try {
     const { page, limit } = req.query;
     const popular = await Gallery.find({})
-      .sort({ created_at: -1 })
+      .sort({ view_count: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
     const galleryCount = await Gallery.find({}).countDocuments();
@@ -71,11 +71,11 @@ router.get("/all-popular", async (req, res) => {
 router.get("/all-premium", async (req, res) => {
   try {
     const { page, limit } = req.query;
-    const toShuffle = await Gallery.find({})
+    const premium = await Gallery.find({})
       .sort({ created_at: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
-    let premium = shuffle(toShuffle);
+
     const galleryCount = await Gallery.find({}).countDocuments();
     res.send({ premium, galleryCount });
   } catch (error) {
@@ -118,6 +118,14 @@ router.post("/subscribe", async (req, res) => {
 router.get("/all-gallery/:id", async (req, res) => {
   const { id } = req.params;
   const galleries = await Gallery.find({ user_id: id });
+  res.send(galleries);
+});
+
+router.get("/single-gallery/:id", async (req, res) => {
+  const { id } = req.params;
+  const galleries = await Gallery.findOne({ _id: id });
+  galleries.view_count += 1;
+  galleries.save();
   res.send(galleries);
 });
 

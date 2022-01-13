@@ -16,19 +16,23 @@ const gallerySchema = mongoose.Schema({
 
   image: {
     type: String,
-  }, 
-  
+  },
+
   description: {
     type: String,
-  }, 
-  
+  },
+
   price: {
     type: String,
   },
-  created_at:{
+  created_at: {
     type: Date,
     default: Date.now(),
-  }
+  },
+  view_count: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Gallery = mongoose.model("Gallery", gallerySchema);

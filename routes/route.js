@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const Gallery = require("../models/Gallery");
+const PDADetail = require("../models/PDADetail");
 const SubscriptionEmail = require("../models/SubscriptionEmail");
 
 router.get("/", (req, res) => {
@@ -127,6 +128,22 @@ router.get("/single-gallery/:id", async (req, res) => {
   galleries.view_count += 1;
   galleries.save();
   res.send(galleries);
+});
+
+router.post("/save-pda", async (req, res) => {
+  try {
+    const { user_id, gallery_id, pda, transaction_hash } = req.body;
+    const pdaDetail = await new PDADetail({
+      user_id: user_id,
+      gallery_id: gallery_id,
+      pda: pda,
+      transaction_hash: transaction_hash,
+    });
+    await pdaDetail.save();
+    res.send(pdaDetail);
+  } catch (error) {
+    res.send(error);
+  }
 });
 
 module.exports = router;

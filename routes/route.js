@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const Gallery = require("../models/Gallery");
+const Favourite = require("../models/Favourite");
 const PDADetail = require("../models/PDADetail");
 const SubscriptionEmail = require("../models/SubscriptionEmail");
 
@@ -144,6 +145,35 @@ router.post("/save-pda", async (req, res) => {
   } catch (error) {
     res.send(error);
   }
+});
+
+router.post("/save-favourite", async (req, res) => {
+  try {
+    const { user_id, gallery_id } = req.body;
+    const favourite = await new Favourite({
+      user_id: user_id,
+      gallery_id: gallery_id,
+    });
+    await favourite.save();
+    res.send(favourite);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.get("/get-favourite/:id", async (req, res) => {
+  const { id } = req.params;
+  // const favourite = await Favourite.find({ user_id: id });
+
+  // const galleries = await Gallery.find({});
+
+  const favourite = await Favourite.find({
+    user_id: id,
+  }).populate({
+    path: "gallery_id",
+  });
+
+  res.send(favourite);
 });
 
 module.exports = router;

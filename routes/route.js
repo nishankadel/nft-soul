@@ -169,9 +169,11 @@ router.get("/get-favourite/:id", async (req, res) => {
 
   const favourite = await Favourite.find({
     user_id: id,
-  }).populate({
-    path: "gallery_id",
-  });
+  })
+    .populate({
+      path: "gallery_id",
+    })
+    .select("gallery_id");
 
   res.send(favourite);
 });

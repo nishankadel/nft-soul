@@ -163,9 +163,6 @@ router.post("/save-favourite", async (req, res) => {
 
 router.get("/get-favourite/:id", async (req, res) => {
   const { id } = req.params;
-  // const favourite = await Favourite.find({ user_id: id });
-
-  // const galleries = await Gallery.find({});
 
   const favourite = await Favourite.find({
     user_id: id,
@@ -174,6 +171,16 @@ router.get("/get-favourite/:id", async (req, res) => {
       path: "gallery_id",
     })
     .select("gallery_id");
+
+  res.send(favourite);
+});
+
+router.get("/get-favourite-gallery/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const favourite = await Favourite.find({
+    user_id: id,
+  }).select("gallery_id");
 
   res.send(favourite);
 });

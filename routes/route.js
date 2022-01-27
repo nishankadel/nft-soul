@@ -5,6 +5,7 @@ const Gallery = require("../models/Gallery");
 const Favourite = require("../models/Favourite");
 const PDADetail = require("../models/PDADetail");
 const SubscriptionEmail = require("../models/SubscriptionEmail");
+const Earning = require("../models/Earning");
 
 router.get("/", (req, res) => {
   res.send("galleries");
@@ -183,6 +184,35 @@ router.get("/get-favourite-gallery/:id", async (req, res) => {
   }).select("gallery_id");
 
   res.send(favourite);
+});
+
+router.post("/post-earnings", async (req, res) => {
+  try {
+    const { user_id, gallery_id, price, datetime } = req.body;
+    const earning = await new Earning({
+      user_id: user_id,
+      gallery_id: gallery_id,
+      datetime: datetime,
+      price: price,
+    });
+    await earning.save();
+    res.send(earning);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.get("/get-earnings/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const earning = await Earning.find({
+    user_id: id,
+  }).populate({
+    path: "gallery_id",
+    select: "gallery_name image",
+  })
+
+  res.send(earning);
 });
 
 module.exports = router;

@@ -22,6 +22,10 @@ const gallerySchema = mongoose.Schema({
     type: String,
   },
 
+  rank: {
+    type: Number,
+  },
+
   price: {
     type: String,
   },

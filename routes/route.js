@@ -88,13 +88,14 @@ router.get("/all-premium", async (req, res) => {
 
 router.post("/create-gallery", async (req, res) => {
   try {
-    const { user_id, gallery_name, nfts, description, price, image } = req.body;
+    const { user_id, gallery_name, nfts, description, rank, price, image } = req.body;
     const gallery = await new Gallery({
       user_id: user_id,
       gallery_name: gallery_name,
       nfts: nfts,
       image: image,
       description: description,
+      rank: rank,
       price: price,
     });
     await gallery.save();
